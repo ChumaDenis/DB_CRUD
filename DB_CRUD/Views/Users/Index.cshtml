@@ -40,27 +40,27 @@
         @foreach (var i in Model)
         {
             <tr>
-                <th>
+                <td>
                     @Html.DisplayFor(model => i.UserID)
-                </th>
-                <th>
+                </td>
+                <td>
                     @Html.DisplayFor(model => i.FirstName)
-                </th>
-                <th>
+                </td>
+                <td>
                     @Html.DisplayFor(model => i.LastName)
-                </th>
-                <th>
+                </td>
+                <td>
                     @Html.DisplayFor(model => i.Login)
-                </th>
-                <th>
+                </td>
+                <td>
                     @Html.DisplayFor(model => i.Password)
-                </th>
-                <th>
+                </td>
+                <td>
                     @Html.DisplayFor(model => i.DateOfBirth)
-                </th>
-                <th>
+                </td>
+                <td>
                     @Html.DisplayFor(model => i.Gender)
-                </th>
+                </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@i.UserID">Edit</a> |
                     <a asp-action="Details" asp-route-id="@i.UserID">Details</a> |

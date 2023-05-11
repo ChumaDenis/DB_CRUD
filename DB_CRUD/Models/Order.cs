@@ -1,4 +1,7 @@
-﻿namespace DB_CRUD.Models
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DB_CRUD.Models
 {
     public class Order
     {
@@ -9,7 +12,7 @@
         public User User { get; set; }
 
         public DateTime OrderDate { get; set; }
-
+        [Column(TypeName = "decimal(18,4)")]
         public decimal OrderCost { get; set; }
 
         public string ItemsDescription { get; set; }

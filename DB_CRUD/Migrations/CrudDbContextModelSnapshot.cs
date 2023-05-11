@@ -35,7 +35,7 @@ namespace DB_CRUD.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("OrderCost")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
@@ -52,6 +52,17 @@ namespace DB_CRUD.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderID = 1,
+                            ItemsDescription = "red",
+                            OrderCost = 1m,
+                            OrderDate = new DateTime(2023, 5, 11, 21, 52, 18, 650, DateTimeKind.Local).AddTicks(8492),
+                            ShippingAddress = "Lviv",
+                            UserID = 1
+                        });
                 });
 
             modelBuilder.Entity("DB_CRUD.Models.User", b =>
@@ -88,6 +99,38 @@ namespace DB_CRUD.Migrations
                     b.HasKey("UserID");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserID = 1,
+                            DateOfBirth = new DateTime(2002, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Test1",
+                            Gender = "M",
+                            LastName = "test1",
+                            Login = "redredred",
+                            Password = "redredred"
+                        },
+                        new
+                        {
+                            UserID = 2,
+                            DateOfBirth = new DateTime(2000, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Test2",
+                            Gender = "F",
+                            LastName = "test2",
+                            Login = "blueblueblue",
+                            Password = "blueblueblue"
+                        },
+                        new
+                        {
+                            UserID = 3,
+                            DateOfBirth = new DateTime(1998, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Test3",
+                            Gender = "F",
+                            LastName = "test3",
+                            Login = "blueblue",
+                            Password = "blueblue"
+                        });
                 });
 
             modelBuilder.Entity("DB_CRUD.Models.Order", b =>
