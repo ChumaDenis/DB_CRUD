@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Data;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DB_CRUD.Contexts
 {
