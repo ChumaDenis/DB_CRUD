@@ -26,7 +26,7 @@ namespace DB_CRUD.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Orders.Include(o=>o.User)
+            var user = await _context.Orders.Include(o => o.User)
                 .FirstOrDefaultAsync(m => m.UserID == id);
             if (user == null)
             {
@@ -53,7 +53,7 @@ namespace DB_CRUD.Controllers
         {
             try
             {
-                
+
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -63,6 +63,44 @@ namespace DB_CRUD.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _context.Orders.FirstOrDefaultAsync(x => x.OrderID == id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return View(order);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, [Bind("OrderID,UserID,OrderDate,OrderCost,ItemsDescription,ShippingAddress")] Order user)
+        {
+            if (id != user.OrderID)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+
+
         }
     }
 }

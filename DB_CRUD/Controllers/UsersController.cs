@@ -76,13 +76,13 @@ namespace DB_CRUD.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Users.FirstOrDefaultAsync(x=>x.UserID==id);
-            if (order == null)
+            var user = await _context.Users.FirstOrDefaultAsync(x=>x.UserID==id);
+            if (user == null)
             {
                 return NotFound();
             }
             
-            return View(order);
+            return View(user);
         }
 
         [HttpPost]
