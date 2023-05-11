@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DB_CRUD.Models
+namespace DB_CRUD.ViewModels
 {
-    public class UserDTO
+    public class SignupUserDto
     {
-        public int UserID { get; set; }
-
         public string Login { get; set; }
 
         public string Password { get; set; }

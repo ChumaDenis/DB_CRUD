@@ -1,5 +1,6 @@
 ﻿using DB_CRUD.Contexts;
 using DB_CRUD.Models;
+using DB_CRUD.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,13 +15,13 @@ namespace DB_CRUD.Controllers
         {
             _context = context;
         }
-
+        [HttpGet("users")]
         public async Task<IActionResult> Index()
         {
             return View(_context.Users);
         }
-
-        public async Task<IActionResult> Details(int? id)
+        [HttpGet("users/details")]
+        public async Task<IActionResult> Details([FromQuery] int? id)
         {
             if (id == null)
             {
@@ -31,12 +32,12 @@ namespace DB_CRUD.Controllers
                 .FirstOrDefaultAsync(m => m.UserID == id);
             if (user == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             return View(user);
         }
-
+        [HttpGet("users/create")]
         public async Task<IActionResult> Create()
         {
             try
@@ -48,8 +49,8 @@ namespace DB_CRUD.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost]
-        public async Task<IActionResult> Create([Bind("Login,Password,PasswordConfirmation, FirstName, LastName, DateOfBirth, Gender")] UserDTO user)
+        [HttpPost("users/create")]
+        public async Task<IActionResult> Create([Bind("Login,Password,PasswordConfirmation, FirstName, LastName, DateOfBirth, Gender")] SignupUserDto user)
         {
             try
             {
@@ -68,7 +69,7 @@ namespace DB_CRUD.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+        [HttpGet("users/edit/{id}")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,15 +85,14 @@ namespace DB_CRUD.Controllers
             
             return View(user);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,Login,Password, FirstName, LastName, DateOfBirth, Gender")]User  user)
+        //Додав до Edit атрибут пост, бо не знаю як зробити в MVC хороший put, використовуючи form
+        [HttpPost("users/edit/{id}")]
+        public async Task<IActionResult> Edit(int id, [Bind("UserID,Login,Password, FirstName, LastName, DateOfBirth, Gender")] User  user)
         {
             if (id != user.UserID)
             {
                 return NotFound();
             }
-
             try
             {
                 _context.Update(user);
@@ -103,12 +103,9 @@ namespace DB_CRUD.Controllers
             {
                 return BadRequest(ex.Message);
             }
-                
-            
-            
         }
 
-
+        [HttpGet("users/delete/{id}")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,9 +121,8 @@ namespace DB_CRUD.Controllers
 
             return View(user);
         }
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpPost("users/delete/{id}")]
+        public async Task<IActionResult> DeleteConfirmed( int id)
         {
             var user = await _context.Users.FindAsync(id);
             _context.Users.Remove(user);

@@ -13,13 +13,14 @@ namespace DB_CRUD.Controllers
         {
             _context = context;
         }
-
+        [HttpGet("orders")]
         public async Task<IActionResult> Index()
         {
 
             return View(await _context.Orders.Include(o => o.User).ToListAsync());
         }
-        public async Task<IActionResult> Details(int? id)
+        [HttpGet("orders/details")]
+        public async Task<IActionResult> Details([FromQuery] int? id)
         {
             if (id == null)
             {
@@ -30,13 +31,13 @@ namespace DB_CRUD.Controllers
                 .FirstOrDefaultAsync(m => m.UserID == id);
             if (user == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             return View(user);
         }
 
-
+        [HttpGet("orders/create")]
         public async Task<IActionResult> Create()
         {
             try
@@ -48,12 +49,12 @@ namespace DB_CRUD.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost]
-        public async Task<IActionResult> Create([Bind("UserID,OrderDate,OrderCost,ItemsDescription,ShippingAddress")] Order order)
+
+        [HttpPost("orders/edit")]
+        public async Task<IActionResult> Create([Bind("OrderDate,OrderCost,ItemsDescription,ShippingAddress")] Order order)
         {
             try
             {
-
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -64,6 +65,7 @@ namespace DB_CRUD.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("orders/edit/{id}")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,7 +82,7 @@ namespace DB_CRUD.Controllers
             return View(order);
         }
 
-        [HttpPost]
+        [HttpPost("orders/edit/{id}")]
         public async Task<IActionResult> Edit(int id, [Bind("OrderID,UserID,OrderDate,OrderCost,ItemsDescription,ShippingAddress")] Order user)
         {
             if (id != user.OrderID)
@@ -98,9 +100,6 @@ namespace DB_CRUD.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
-
-
         }
     }
 }
