@@ -1,6 +1,7 @@
 ﻿using DB_CRUD.Contexts;
 using DB_CRUD.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DB_CRUD.Controllers
 {
@@ -16,6 +17,23 @@ namespace DB_CRUD.Controllers
         public async Task<IActionResult> Index()
         {
             return View(_context.Users);
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.Users
+                .FirstOrDefaultAsync(m => m.UserID == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
         }
 
         public async Task<IActionResult> Create()
@@ -50,13 +68,31 @@ namespace DB_CRUD.Controllers
             }
         }
 
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            User user = await _context.Users.FirstOrDefaultAsync(x => x.UserID == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
+            return View(user);
+        }
 
-
-
-
-
-
+        // POST: Orders/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
