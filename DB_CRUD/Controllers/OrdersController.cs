@@ -19,22 +19,22 @@ namespace DB_CRUD.Controllers
 
             return View(await _context.Orders.Include(o => o.User).ToListAsync());
         }
-        [HttpGet("orders/details")]
-        public async Task<IActionResult> Details([FromQuery] int? id)
+        [HttpGet("orders/{id}")]
+        public async Task<IActionResult> Details( int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Orders.Include(o => o.User)
-                .FirstOrDefaultAsync(m => m.UserID == id);
-            if (user == null)
+            var order = await _context.Orders.Include(o => o.User)
+                .FirstOrDefaultAsync(m => m.OrderID == id);
+            if (order == null)
             {
                 return BadRequest();
             }
 
-            return View(user);
+            return View(order);
         }
 
         [HttpGet("orders/create")]

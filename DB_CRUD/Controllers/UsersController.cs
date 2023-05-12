@@ -20,8 +20,8 @@ namespace DB_CRUD.Controllers
         {
             return View(_context.Users);
         }
-        [HttpGet("users/details")]
-        public async Task<IActionResult> Details([FromQuery] int? id)
+        [HttpGet("users/details/{id}")]
+        public async Task<IActionResult> Details( int? id)
         {
             if (id == null)
             {
